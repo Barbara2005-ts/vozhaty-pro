@@ -5,6 +5,8 @@
 
 body {
     margin: 0;
+    padding: 0;
+    min-height: 100vh;
     height: 100vh;
     overflow: hidden;
     background: linear-gradient(145deg, #0a2f3a 0%, #064e3b 100%);
@@ -12,21 +14,33 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 12px;
 }
 
 /* основной контейнер — занимает весь экран без скролла */
 .game-container {
     width: 100%;
-    height: 96vh;
+    height: 100vh;
     max-width: 1600px;
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 40px;
+    border-radius: 0;
     padding: 16px;
-    box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+}
+
+/* на больших экранах добавляем отступы */
+@media (min-width: 1200px) {
+    .game-container {
+        height: 96vh;
+        border-radius: 40px;
+        box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+    }
+    
+    body {
+        padding: 12px;
+    }
 }
 
 /* ========== ЭКРАН НАСТРОЙКИ ========== */
@@ -43,50 +57,68 @@ body {
     overflow-y: auto;
 }
 
+/* скролл на экране настройки только если нужно */
+.setup-screen::-webkit-scrollbar {
+    width: 4px;
+}
+
 .setup-header h1 {
     color: #ffd966;
-    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    font-size: clamp(1.3rem, 6vw, 2.2rem);
     margin-bottom: 6px;
 }
 
 .setup-header p {
     color: #cbd5e1;
-    font-size: clamp(0.75rem, 3vw, 1rem);
+    font-size: clamp(0.7rem, 3vw, 1rem);
     margin-bottom: 20px;
 }
 
 .teams-setup {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .team-setup-card {
     background: #1e293b;
-    border-radius: 32px;
-    padding: 15px;
-    min-width: 200px;
+    border-radius: 28px;
+    padding: 16px;
+    min-width: 220px;
+    max-width: 260px;
+    flex: 1;
     box-shadow: 0 6px 0 #0f172a;
 }
 
 .team-setup-card h3 {
     color: #facc15;
-    margin-bottom: 10px;
-    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    margin-bottom: 12px;
+    font-size: clamp(1rem, 4vw, 1.2rem);
 }
 
 .team-name-input {
     width: 100%;
-    padding: 10px;
-    font-size: 0.9rem;
+    padding: 12px;
+    font-size: 1rem;
     border-radius: 24px;
     border: none;
     text-align: center;
     margin-bottom: 12px;
     background: #334155;
     color: white;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.team-name-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ffd966;
+}
+
+.team-name-input::placeholder {
+    color: #94a3b8;
 }
 
 .emoji-selector {
@@ -94,17 +126,21 @@ body {
     justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
+    max-height: 120px;
+    overflow-y: auto;
+    padding: 5px;
 }
 
 .emoji-option {
-    font-size: 1.4rem;
-    padding: 5px;
+    font-size: 1.5rem;
+    padding: 6px;
     cursor: pointer;
     border-radius: 50%;
     transition: 0.1s;
     background: #334155;
-    width: 42px;
+    width: 44px;
     text-align: center;
+    flex-shrink: 0;
 }
 
 .emoji-option.selected {
@@ -115,12 +151,13 @@ body {
 
 .start-game-btn {
     font-size: clamp(1rem, 4vw, 1.3rem);
-    padding: 10px 30px;
+    padding: 12px 30px;
     background: #ffb347;
     border: none;
     border-radius: 40px;
     font-weight: bold;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .setup-buttons {
@@ -139,7 +176,7 @@ body {
     border: none;
     font-weight: bold;
     cursor: pointer;
-    font-size: clamp(0.9rem, 3vw, 1rem);
+    font-size: clamp(0.85rem, 3vw, 1rem);
 }
 
 /* ========== ИГРОВОЙ ЭКРАН ========== */
@@ -160,7 +197,7 @@ body {
 .scoreboard {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 12px;
     margin-bottom: 12px;
     flex-wrap: wrap;
     flex-shrink: 0;
@@ -168,40 +205,43 @@ body {
 
 .team-card {
     background: #1e293b;
-    border-radius: 28px;
-    padding: 10px 18px;
+    border-radius: 24px;
+    padding: 8px 16px;
     text-align: center;
     color: #facc15;
-    box-shadow: 0 5px 0 #0f172a;
+    box-shadow: 0 4px 0 #0f172a;
     transition: 0.1s linear;
-    min-width: 140px;
+    min-width: 120px;
+    flex: 1;
+    max-width: 180px;
 }
 
 .team-card.active-team {
     background: #2d3a5e;
-    box-shadow: 0 0 0 2px #facc15, 0 5px 0 #0f172a;
+    box-shadow: 0 0 0 2px #facc15, 0 4px 0 #0f172a;
     transform: scale(1.01);
 }
 
 .team-name {
-    font-size: clamp(0.8rem, 2.5vw, 1.3rem);
+    font-size: clamp(0.7rem, 3vw, 1.2rem);
     font-weight: bold;
+    word-break: break-word;
 }
 
 .team-score {
-    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-size: clamp(1rem, 4vw, 1.8rem);
     font-weight: 800;
     background: #00000066;
     border-radius: 40px;
     margin-top: 5px;
     color: #facc15;
-    padding: 3px;
+    padding: 2px 8px;
 }
 
 .score-controls {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     margin-top: 6px;
 }
 
@@ -209,17 +249,18 @@ body {
     background: #334155;
     border: none;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: bold;
-    width: 32px;
-    border-radius: 25px;
+    width: 30px;
+    border-radius: 20px;
     cursor: pointer;
+    padding: 4px 0;
 }
 
-/* основное игровое поле — растягивается на всё свободное место */
+/* основное игровое поле */
 .game-board {
     background: #021a1a;
-    border-radius: 28px;
+    border-radius: 24px;
     padding: 12px;
     margin-bottom: 10px;
     flex: 1;
@@ -227,6 +268,10 @@ body {
     flex-direction: column;
     min-height: 0;
     overflow: auto;
+}
+
+.game-board::-webkit-scrollbar {
+    width: 4px;
 }
 
 .categories {
@@ -241,13 +286,14 @@ body {
     background: #0f3b3b;
     text-align: center;
     padding: 10px 3px;
-    font-size: clamp(0.6rem, 2.2vw, 0.9rem);
+    font-size: clamp(0.55rem, 2.2vw, 0.85rem);
     font-weight: bold;
     color: #ffd966;
-    border-radius: 24px;
+    border-radius: 20px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     word-break: break-word;
+    line-height: 1.2;
 }
 
 .questions-grid {
@@ -261,13 +307,13 @@ body {
     background: #1e4b4b;
     text-align: center;
     padding: 12px 3px;
-    font-size: clamp(1rem, 3.5vw, 1.6rem);
+    font-size: clamp(0.9rem, 3.5vw, 1.5rem);
     font-weight: bold;
     color: #ffd966;
-    border-radius: 24px;
+    border-radius: 20px;
     cursor: pointer;
     transition: 0.1s linear;
-    box-shadow: 0 4px 0 #083232;
+    box-shadow: 0 3px 0 #083232;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -290,27 +336,30 @@ body {
 .game-controls {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     margin-top: 8px;
     flex-shrink: 0;
+    flex-wrap: wrap;
 }
 
 .ctrl-btn {
     background: #ffb347;
     border: none;
-    padding: 8px 16px;
-    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    padding: 8px 14px;
+    font-size: clamp(0.65rem, 2.5vw, 0.9rem);
     font-weight: bold;
-    border-radius: 35px;
+    border-radius: 30px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .footer {
     text-align: center;
-    margin-top: 8px;
+    margin-top: 6px;
     color: #cbd5e1;
-    font-size: clamp(0.55rem, 2vw, 0.75rem);
+    font-size: clamp(0.5rem, 2vw, 0.7rem);
     flex-shrink: 0;
+    padding: 0 4px;
 }
 
 /* модальное окно вопроса */
@@ -329,17 +378,19 @@ body {
 
 .modal-content {
     background: #fef9e8;
-    max-width: 650px;
-    width: 90%;
-    border-radius: 48px;
+    max-width: 90%;
+    width: 600px;
+    border-radius: 40px;
     padding: 20px;
     text-align: center;
     color: #1e293b;
     box-shadow: 0 25px 40px black;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .results-modal {
-    max-width: 420px;
+    max-width: 400px;
 }
 
 .results-list {
@@ -354,15 +405,14 @@ body {
     padding: 10px 15px;
     margin: 8px 0;
     background: #f0f0f0;
-    border-radius: 35px;
-    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+    border-radius: 30px;
+    font-size: clamp(0.8rem, 3vw, 1.1rem);
     font-weight: bold;
 }
 
 .result-item.place-1 {
     background: linear-gradient(135deg, #ffd700, #ffb347);
     color: #1e293b;
-    transform: scale(1.01);
 }
 
 .result-item.place-2 {
@@ -377,24 +427,28 @@ body {
 
 .place-icon {
     font-size: 1.4rem;
-    margin-right: 12px;
+    margin-right: 10px;
 }
 
 .result-name {
     flex: 1;
+    word-break: break-word;
+    padding-right: 8px;
 }
 
 .result-score {
     font-weight: 800;
     background: #00000033;
-    padding: 3px 12px;
+    padding: 3px 10px;
     border-radius: 25px;
+    white-space: nowrap;
 }
 
 .question-text {
     font-size: clamp(1rem, 4vw, 1.5rem);
     margin-bottom: 20px;
     font-weight: 600;
+    line-height: 1.3;
 }
 
 .question-value {
@@ -412,6 +466,7 @@ body {
     justify-content: center;
     gap: 12px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .modal-buttons button {
@@ -438,15 +493,15 @@ body {
 
 /* ========== МОДАЛЬНОЕ ОКНО ПРАВИЛ ========== */
 .rules-modal {
-    max-width: 550px;
-    max-height: 80vh;
+    max-width: 500px;
+    max-height: 85vh;
     overflow-y: auto;
 }
 
 .rules-modal h2 {
     color: #1e293b;
     margin-bottom: 15px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
 }
 
 .rules-content {
@@ -493,7 +548,7 @@ body {
     font-size: 0.95rem;
 }
 
-/* ========== ЛЕТАЮЩИЕ ФИГУРЫ НА ФОНЕ ========== */
+/* ========== ЛЕТАЮЩИЕ ФИГУРЫ ========== */
 .floating-shapes {
     position: fixed;
     top: 0;
@@ -556,28 +611,63 @@ body {
     animation-duration: 14s;
 }
 
-/* ========== АДАПТАЦИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (до 900px) ========== */
-@media (max-width: 900px) {
-    body {
+/* ========== ТЕЛЕФОНЫ (до 768px) ========== */
+@media (max-width: 768px) {
+    .game-container {
         padding: 8px;
+        height: 100vh;
+        border-radius: 0;
     }
     
-    .game-container {
+    .setup-screen {
+        padding: 12px;
+        border-radius: 24px;
+    }
+    
+    .teams-setup {
+        gap: 12px;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .team-setup-card {
+        min-width: auto;
+        width: 100%;
+        max-width: 300px;
+        padding: 12px;
+    }
+    
+    .team-name-input {
         padding: 10px;
-        border-radius: 28px;
+        font-size: 0.9rem;
+    }
+    
+    .emoji-selector {
+        max-height: 100px;
+        gap: 6px;
+    }
+    
+    .emoji-option {
+        font-size: 1.2rem;
+        width: 38px;
+        padding: 4px;
+    }
+    
+    .scoreboard {
+        gap: 8px;
     }
     
     .team-card {
-        padding: 6px 12px;
-        min-width: 110px;
+        padding: 6px 10px;
+        min-width: 90px;
     }
     
     .team-name {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
     }
     
     .team-score {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     
     .score-controls button {
@@ -587,72 +677,58 @@ body {
     
     .category {
         padding: 6px 2px;
-        font-size: 0.55rem;
-        border-radius: 16px;
+        font-size: 0.5rem;
+        border-radius: 12px;
     }
     
     .question-cell {
         padding: 8px 2px;
-        font-size: 0.9rem;
-        border-radius: 16px;
+        font-size: 0.8rem;
+        border-radius: 12px;
     }
     
     .game-board {
         padding: 8px;
-        border-radius: 20px;
+        border-radius: 16px;
     }
     
     .ctrl-btn {
-        padding: 5px 12px;
-        font-size: 0.65rem;
+        padding: 5px 10px;
+        font-size: 0.6rem;
+        white-space: nowrap;
     }
     
     .footer {
-        font-size: 0.5rem;
+        font-size: 0.45rem;
     }
     
-    .team-setup-card {
-        min-width: 160px;
-        padding: 10px;
+    .modal-content {
+        padding: 15px;
+        border-radius: 28px;
     }
     
-    .emoji-option {
+    .result-item {
+        padding: 8px 12px;
+    }
+    
+    .place-icon {
         font-size: 1.1rem;
-        width: 35px;
-    }
-    
-    .setup-header h1 {
-        font-size: 1.3rem;
-    }
-    
-    .start-game-btn {
-        padding: 8px 20px;
-        font-size: 1rem;
     }
 }
 
-/* ========== ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ (до 600px) ========== */
-@media (max-width: 600px) {
-    body {
-        padding: 4px;
-    }
-    
-    .game-container {
-        padding: 6px;
-        border-radius: 20px;
-    }
-    
+/* ========== ОЧЕНЬ МАЛЕНЬКИЕ ТЕЛЕФОНЫ (до 480px) ========== */
+@media (max-width: 480px) {
     .team-card {
-        padding: 4px 8px;
-        min-width: 90px;
+        padding: 4px 6px;
+        min-width: 70px;
     }
     
     .team-name {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
     }
     
     .team-score {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
     
     .score-controls button {
@@ -660,24 +736,14 @@ body {
         font-size: 0.6rem;
     }
     
-    .categories {
-        gap: 4px;
-    }
-    
     .category {
-        padding: 4px 2px;
         font-size: 0.45rem;
-        border-radius: 12px;
-    }
-    
-    .questions-grid {
-        gap: 4px;
+        padding: 4px 1px;
     }
     
     .question-cell {
-        padding: 6px 2px;
         font-size: 0.7rem;
-        border-radius: 12px;
+        padding: 6px 1px;
     }
     
     .ctrl-btn {
@@ -685,31 +751,16 @@ body {
         font-size: 0.55rem;
     }
     
-    .game-board {
-        padding: 6px;
-    }
-    
-    .team-setup-card {
-        min-width: 140px;
-        padding: 8px;
-    }
-    
-    .emoji-option {
-        font-size: 0.9rem;
-        width: 28px;
-        padding: 3px;
+    .game-controls {
+        gap: 6px;
     }
     
     .setup-header h1 {
-        font-size: 1.1rem;
-    }
-    
-    .setup-header p {
-        font-size: 0.65rem;
+        font-size: 1.2rem;
     }
     
     .start-game-btn {
-        padding: 6px 15px;
-        font-size: 0.85rem;
+        padding: 8px 20px;
+        font-size: 0.9rem;
     }
 }
