@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Вожатый — Своя игра</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- Летающие фигуры на фоне -->
+<div class="floating-shapes" id="floatingShapes"></div>
+<div class="game-container">
+    <!-- экран настройки команд -->
+    <div id="setupScreen" class="setup-screen">
+        <div class="setup-header">
+            <h1>Вожатый — Своя игра</h1>
+            <p>Настройте команды перед игрой</p>
+        </div>
+        
+        <div class="teams-setup" id="teamsSetup"></div>
+        
+        <div class="setup-buttons">
+            <button class="ctrl-btn rules-btn" id="setupRulesBtn">Правила игры</button>
+            <button class="ctrl-btn start-game-btn" id="startGameBtn">Начать игру!</button>
+        </div>
+    </div>
+
+    <!-- основной игровой экран-->
+    <div id="gameScreen" class="game-screen" style="display: none;">
+        <!-- табло команд -->
+        <div class="scoreboard" id="scoreboard"></div>
+
+        <!-- игровое поле -->
+        <div class="game-board">
+            <div class="categories" id="categories"></div>
+            <div class="questions-grid" id="questionsGrid"></div>
+        </div>
+
+        <div class="game-controls">
+            <button class="ctrl-btn" id="resetGameBtn">🔄 Новая игра</button>
+            <button class="ctrl-btn" id="nextTeamBtn">➡️ Сменить команду</button>
+            <button class="ctrl-btn" id="rulesBtn">📖 Правила игры</button>
+        </div>
+        <div class="footer">
+            🔔 Активная команда выделена золотой рамкой. Нажмите на ячейку вопроса, чтобы увидеть.
+        </div>
+    </div>
+</div>
+
+<!-- модальное окно вопроса -->
+<div id="questionModal" class="modal">
+    <div class="modal-content">
+        <div class="question-value" id="modalValue">10 баллов</div>
+        <div class="question-text" id="modalQuestion">Вопрос появится здесь</div>
+        <div class="modal-buttons">
+            <button class="btn-correct" id="correctBtn">Верно (+ баллы)</button>
+            <button class="btn-wrong" id="wrongBtn">Неверно (снять баллы)</button>
+            <button class="btn-close" id="closeModalBtn">✖️ Отмена</button>
+        </div>
+    </div>
+</div>
+
+<!-- модальное окно результатов -->
+<div id="resultsModal" class="modal">
+    <div class="modal-content results-modal">
+        <h2>🏆 Игра завершена! 🏆</h2>
+        <div id="resultsList" class="results-list"></div>
+        <button class="ctrl-btn" id="closeResultsBtn">Закрыть</button>
+    </div>
+</div>
+
+<!-- модальное окно правил игры -->
+<div id="rulesModal" class="modal">
+    <div class="modal-content rules-modal">
+        <h2>Правила игры «Вожатый — Своя игра»</h2>
+        <div class="rules-content">
+            <div class="rules-section">
+                <h3>Цель игры</h3>
+                <p>Набрать максимальное количество баллов, отвечая на вопросы по вожатской деятельности.</p>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Команды</h3>
+                <p>В игре участвуют 3 команды. Перед началом игры каждая команда выбирает название и эмодзи-аватар.</p>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Игровое поле</h3>
+                <p>Поле состоит из 5 категорий по 4 вопроса в каждой. Стоимость вопросов: 10, 20, 30, 40 баллов. Чем сложнее вопрос, тем больше баллов.</p>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Ход игры</h3>
+                <ul>
+                    <li>Активная команда выделена золотой рамкой.</li>
+                    <li>Ведущий нажимает на ячейку с выбранным вопросом.</li>
+                    <li>Команда даёт ответ устно. Если ответа нет, ведущий нажимает кнопку "Отмена", и вопрос передается следующей команде, знающей ответ.</li>
+                    <li>Ведущий оценивает ответ и нажимает «Верно» или «Неверно».</li>
+                    <li>При правильном ответе команда получает баллы, при неправильном — баллы снимаются.</li>
+                    <li>После ответа ход переходит к следующей команде.</li>
+                </ul>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Управление</h3>
+                <ul>
+                    <li><strong>Верно/Неверно</strong> — начисление или списание баллов.</li>
+                    <li><strong>Сменить команду</strong> — передать ход без ответа на вопрос.</li>
+                    <li><strong>+10 / -10 / +25</strong> — ручная корректировка счёта.</li>
+                    <li><strong>Новая игра</strong> — возврат к настройке команд.</li>
+                </ul>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Завершение игры</h3>
+                <p>Игра заканчивается, когда отвечены все 20 вопросов. Побеждает команда, набравшая наибольшее количество баллов.</p>
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-close" id="closeRulesBtn">Понятно!</button>
+        </div>
+    </div>
+</div>
+<script>
+    // Генерация летающих фигур
+    const colors = ['#caeefb', '#ffde7d', '#FFB8D7', '#82AD8F', '#F2AC80', '#10A73E'];
+    const shapes = ['star', 'circle', 'triangle'];
+    
+    function createFloatingShapes() {
+        const container = document.getElementById('floatingShapes');
+        if (!container) return;
+        
+        for (let i = 0; i < 60; i++) {
+            const shape = document.createElement('div');
+            const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 40 + 15; // от 15 до 55px
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            const delay = Math.random() * 15;
+            const duration = Math.random() * 15 + 10;
+            
+            shape.className = `shape ${shapeType}`;
+            shape.style.left = `${left}%`;
+            shape.style.top = `${top}%`;
+            shape.style.position = 'absolute';
+            shape.style.opacity = Math.random() * 0.4 + 0.2;
+            shape.style.animationDelay = `${delay}s`;
+            shape.style.animationDuration = `${duration}s`;
+            shape.style.color = color;
+            
+            if (shapeType === 'star') {
+                shape.style.fontSize = `${size}px`;
+                shape.style.color = color;
+                shape.innerHTML = '★';
+                shape.style.background = 'transparent';
+                shape.style.width = 'auto';
+                shape.style.height = 'auto';
+            } else if (shapeType === 'circle') {
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+                shape.style.backgroundColor = color;
+                shape.style.borderRadius = '50%';
+            } else if (shapeType === 'triangle') {
+                shape.style.width = '0';
+                shape.style.height = '0';
+                shape.style.borderLeft = `${size/2}px solid transparent`;
+                shape.style.borderRight = `${size/2}px solid transparent`;
+                shape.style.borderBottom = `${size}px solid ${color}`;
+                shape.style.backgroundColor = 'transparent';
+            }
+            
+            container.appendChild(shape);
+        }
+    }
+    
+    createFloatingShapes();
+</script>
+<script src="js/script.js"></script>
+</body>
+</html>

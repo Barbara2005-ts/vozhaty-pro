@@ -1,0 +1,565 @@
+* {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(145deg, #0a2f3a 0%, #064e3b 100%);
+    font-family: 'Segoe UI', 'Roboto', 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* основной контейнер */
+.game-container {
+    max-width: 1400px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 64px;
+    padding: 20px;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+}
+
+/* ========== ЭКРАН НАСТРОЙКИ ========== */
+.setup-screen {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 48px;
+    padding: 30px;
+    text-align: center;
+}
+
+.setup-header h1 {
+    color: #ffd966;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.setup-header p {
+    color: #cbd5e1;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.teams-setup {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.team-setup-card {
+    background: #1e293b;
+    border-radius: 40px;
+    padding: 20px;
+    min-width: 250px;
+    box-shadow: 0 8px 0 #0f172a;
+}
+
+.team-setup-card h3 {
+    color: #facc15;
+    margin-bottom: 15px;
+}
+
+.team-name-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 30px;
+    border: none;
+    text-align: center;
+    margin-bottom: 15px;
+    background: #334155;
+    color: white;
+}
+
+.team-name-input::placeholder {
+    color: #94a3b8;
+}
+
+.emoji-selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.emoji-option {
+    font-size: 1.8rem;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.1s;
+    background: #334155;
+    width: 55px;
+    text-align: center;
+}
+
+.emoji-option.selected {
+    background: #facc15;
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px #ffd966;
+}
+
+.start-game-btn {
+    font-size: 1.5rem;
+    padding: 15px 40px;
+    background: #ffb347;
+}
+
+/* ========== ИГРОВОЙ ЭКРАН ========== */
+.game-screen {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* табло */
+.scoreboard {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.team-card {
+    background: #1e293b;
+    border-radius: 40px;
+    padding: 15px 30px;
+    text-align: center;
+    color: #facc15;
+    box-shadow: 0 8px 0 #0f172a;
+    transition: 0.1s linear;
+    min-width: 180px;
+}
+
+.team-card.active-team {
+    background: #2d3a5e;
+    box-shadow: 0 0 0 3px #facc15, 0 8px 0 #0f172a;
+    transform: scale(1.02);
+}
+
+.team-name {
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.team-score {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: #00000066;
+    border-radius: 60px;
+    margin-top: 8px;
+    color: #facc15;
+}
+
+.score-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.score-controls button {
+    background: #334155;
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: bold;
+    width: 45px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.score-controls button:active {
+    transform: scale(0.92);
+}
+
+/* основное игровое поле */
+.game-board {
+    background: #021a1a;
+    border-radius: 48px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.category {
+    background: #0f3b3b;
+    text-align: center;
+    padding: 20px 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffd966;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: inset 0 -3px 0 #022b2b;
+    word-break: break-word;
+}
+
+.questions-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.question-cell {
+    background: #1e4b4b;
+    text-align: center;
+    padding: 25px 10px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffd966;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.1s linear;
+    box-shadow: 0 6px 0 #083232;
+}
+
+.question-cell.used {
+    background: #2c5a5a;
+    color: #6e9e9e;
+    cursor: default;
+    box-shadow: none;
+    transform: translateY(3px);
+    filter: brightness(0.7);
+    text-decoration: line-through;
+}
+
+.question-cell:active:not(.used) {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+/* модальное окно вопроса */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fef9e8;
+    max-width: 800px;
+    width: 90%;
+    border-radius: 60px;
+    padding: 30px;
+    text-align: center;
+    color: #1e293b;
+    box-shadow: 0 25px 40px black;
+}
+
+.results-modal {
+    max-width: 500px;
+}
+
+.results-list {
+    margin: 30px 0;
+    text-align: left;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    margin: 10px 0;
+    background: #f0f0f0;
+    border-radius: 40px;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.result-item.place-1 {
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    color: #1e293b;
+    transform: scale(1.02);
+}
+
+.result-item.place-2 {
+    background: #c0c0c0;
+    color: #1e293b;
+}
+
+.result-item.place-3 {
+    background: #cd7f32;
+    color: #1e293b;
+}
+
+.place-icon {
+    font-size: 2rem;
+    margin-right: 15px;
+}
+
+.result-name {
+    flex: 1;
+}
+
+.result-score {
+    font-weight: 800;
+    background: #00000033;
+    padding: 5px 15px;
+    border-radius: 30px;
+}
+
+.question-text {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.question-value {
+    font-size: 1.4rem;
+    background: goldenrod;
+    display: inline-block;
+    padding: 5px 20px;
+    border-radius: 40px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    padding: 12px 28px;
+    font-size: 1.2rem;
+    border-radius: 40px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-correct {
+    background: #2b7e3a;
+    color: white;
+}
+.btn-wrong {
+    background: #b91c1c;
+    color: white;
+}
+.btn-close {
+    background: #475569;
+    color: white;
+}
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.ctrl-btn {
+    background: #ffb347;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #cbd5e1;
+}
+
+@media (max-width: 800px) {
+    .category { font-size: 0.8rem; }
+    .question-cell { font-size: 1.3rem; padding: 15px 5px; }
+    .team-name { font-size: 1rem; }
+    .result-item { font-size: 1rem; padding: 10px 15px; }
+    .place-icon { font-size: 1.5rem; }
+    .team-setup-card { min-width: 200px; }
+    .emoji-option { font-size: 1.4rem; width: 45px; }
+}
+
+/* ========== КНОПКИ НА ЭКРАНЕ НАСТРОЙКИ ========== */
+.setup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.rules-btn {
+    background: #475569;
+}
+
+.rules-btn:hover {
+    background: #5b6b82;
+}
+
+/* ========== МОДАЛЬНОЕ ОКНО ПРАВИЛ ========== */
+.rules-modal {
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.rules-modal h2 {
+    color: #1e293b;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.rules-content {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.rules-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.rules-section:last-child {
+    border-bottom: none;
+}
+
+.rules-section h3 {
+    color: #2b7e3a;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.rules-section p {
+    color: #334155;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+.rules-section ul {
+    margin: 10px 0 0 20px;
+    color: #334155;
+    line-height: 1.5;
+}
+
+.rules-section li {
+    margin: 8px 0;
+}
+
+#closeRulesBtn {
+    background: #2b7e3a;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+}
+
+#closeRulesBtn:hover {
+    background: #1f5a2c;
+}
+
+/* Стили для скролла в модальном окне */
+.rules-modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.rules-modal::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.rules-modal::-webkit-scrollbar-thumb {
+    background: #ffb347;
+    border-radius: 10px;
+}
+
+/* ========== ЛЕТАЮЩИЕ ФИГУРЫ НА ФОНЕ ========== */
+.floating-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.shape {
+    position: absolute;
+    opacity: 0.35;
+    animation: float 15s infinite ease-in-out;
+}
+
+/* Звёздочки */
+.shape.star {
+    font-family: monospace;
+}
+
+/* Круги */
+.shape.circle {
+    border-radius: 50%;
+}
+
+/* Треугольники */
+.shape.triangle {
+    width: 0;
+    height: 0;
+    background: transparent !important;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-40px) translateX(25px) rotate(90deg);
+    }
+    50% {
+        transform: translateY(30px) translateX(-20px) rotate(180deg);
+    }
+    75% {
+        transform: translateY(-25px) translateX(-35px) rotate(270deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(360deg);
+    }
+}
+
+/* Разные скорости */
+.shape:nth-child(odd) {
+    animation-duration: 18s;
+}
+.shape:nth-child(even) {
+    animation-duration: 12s;
+}
+.shape:nth-child(3n) {
+    animation-duration: 22s;
+}
+.shape:nth-child(5n) {
+    animation-duration: 14s;
+}
