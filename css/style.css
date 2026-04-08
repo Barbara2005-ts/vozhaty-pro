@@ -5,98 +5,105 @@
 
 body {
     margin: 0;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
     background: linear-gradient(145deg, #0a2f3a 0%, #064e3b 100%);
     font-family: 'Segoe UI', 'Roboto', 'Montserrat', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 12px;
 }
 
-/* основной контейнер */
+/* основной контейнер — занимает весь экран без скролла */
 .game-container {
-    max-width: 1400px;
     width: 100%;
+    height: 96vh;
+    max-width: 1600px;
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 64px;
-    padding: 20px;
+    border-radius: 40px;
+    padding: 16px;
     box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 /* ========== ЭКРАН НАСТРОЙКИ ========== */
 .setup-screen {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 48px;
-    padding: 30px;
+    border-radius: 36px;
+    padding: 20px;
     text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
 }
 
 .setup-header h1 {
     color: #ffd966;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    margin-bottom: 6px;
 }
 
 .setup-header p {
     color: #cbd5e1;
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+    font-size: clamp(0.75rem, 3vw, 1rem);
+    margin-bottom: 20px;
 }
 
 .teams-setup {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
     flex-wrap: wrap;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
 .team-setup-card {
     background: #1e293b;
-    border-radius: 40px;
-    padding: 20px;
-    min-width: 250px;
-    box-shadow: 0 8px 0 #0f172a;
+    border-radius: 32px;
+    padding: 15px;
+    min-width: 200px;
+    box-shadow: 0 6px 0 #0f172a;
 }
 
 .team-setup-card h3 {
     color: #facc15;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
 }
 
 .team-name-input {
     width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 30px;
+    padding: 10px;
+    font-size: 0.9rem;
+    border-radius: 24px;
     border: none;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     background: #334155;
     color: white;
-}
-
-.team-name-input::placeholder {
-    color: #94a3b8;
 }
 
 .emoji-selector {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
 .emoji-option {
-    font-size: 1.8rem;
-    padding: 8px;
+    font-size: 1.4rem;
+    padding: 5px;
     cursor: pointer;
     border-radius: 50%;
     transition: 0.1s;
     background: #334155;
-    width: 55px;
+    width: 42px;
     text-align: center;
 }
 
@@ -107,14 +114,41 @@ body {
 }
 
 .start-game-btn {
-    font-size: 1.5rem;
-    padding: 15px 40px;
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    padding: 10px 30px;
     background: #ffb347;
+    border: none;
+    border-radius: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.setup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.rules-btn {
+    background: #475569;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 40px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: clamp(0.9rem, 3vw, 1rem);
 }
 
 /* ========== ИГРОВОЙ ЭКРАН ========== */
 .game-screen {
     animation: fadeIn 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -126,112 +160,117 @@ body {
 .scoreboard {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-bottom: 30px;
+    gap: 15px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
+    flex-shrink: 0;
 }
 
 .team-card {
     background: #1e293b;
-    border-radius: 40px;
-    padding: 15px 30px;
+    border-radius: 28px;
+    padding: 10px 18px;
     text-align: center;
     color: #facc15;
-    box-shadow: 0 8px 0 #0f172a;
+    box-shadow: 0 5px 0 #0f172a;
     transition: 0.1s linear;
-    min-width: 180px;
+    min-width: 140px;
 }
 
 .team-card.active-team {
     background: #2d3a5e;
-    box-shadow: 0 0 0 3px #facc15, 0 8px 0 #0f172a;
-    transform: scale(1.02);
+    box-shadow: 0 0 0 2px #facc15, 0 5px 0 #0f172a;
+    transform: scale(1.01);
 }
 
 .team-name {
-    font-size: 1.6rem;
+    font-size: clamp(0.8rem, 2.5vw, 1.3rem);
     font-weight: bold;
-    letter-spacing: 1px;
 }
 
 .team-score {
-    font-size: 2.5rem;
+    font-size: clamp(1.2rem, 4vw, 2rem);
     font-weight: 800;
     background: #00000066;
-    border-radius: 60px;
-    margin-top: 8px;
+    border-radius: 40px;
+    margin-top: 5px;
     color: #facc15;
+    padding: 3px;
 }
 
 .score-controls {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 10px;
+    gap: 8px;
+    margin-top: 6px;
 }
 
 .score-controls button {
     background: #334155;
     border: none;
     color: white;
-    font-size: 1.3rem;
+    font-size: 0.9rem;
     font-weight: bold;
-    width: 45px;
-    border-radius: 30px;
+    width: 32px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: 0.1s;
 }
 
-.score-controls button:active {
-    transform: scale(0.92);
-}
-
-/* основное игровое поле */
+/* основное игровое поле — растягивается на всё свободное место */
 .game-board {
     background: #021a1a;
-    border-radius: 48px;
-    padding: 20px;
-    margin-bottom: 25px;
+    border-radius: 28px;
+    padding: 12px;
+    margin-bottom: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: auto;
 }
 
 .categories {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
 }
 
 .category {
     background: #0f3b3b;
     text-align: center;
-    padding: 20px 5px;
-    font-size: 1.2rem;
+    padding: 10px 3px;
+    font-size: clamp(0.6rem, 2.2vw, 0.9rem);
     font-weight: bold;
     color: #ffd966;
-    border-radius: 30px;
+    border-radius: 24px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: inset 0 -3px 0 #022b2b;
     word-break: break-word;
 }
 
 .questions-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    gap: 8px;
+    flex: 1;
 }
 
 .question-cell {
     background: #1e4b4b;
     text-align: center;
-    padding: 25px 10px;
-    font-size: 2rem;
+    padding: 12px 3px;
+    font-size: clamp(1rem, 3.5vw, 1.6rem);
     font-weight: bold;
     color: #ffd966;
-    border-radius: 30px;
+    border-radius: 24px;
     cursor: pointer;
     transition: 0.1s linear;
-    box-shadow: 0 6px 0 #083232;
+    box-shadow: 0 4px 0 #083232;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .question-cell.used {
@@ -239,14 +278,39 @@ body {
     color: #6e9e9e;
     cursor: default;
     box-shadow: none;
-    transform: translateY(3px);
-    filter: brightness(0.7);
+    transform: translateY(2px);
     text-decoration: line-through;
 }
 
 .question-cell:active:not(.used) {
-    transform: translateY(4px);
+    transform: translateY(3px);
     box-shadow: none;
+}
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+    flex-shrink: 0;
+}
+
+.ctrl-btn {
+    background: #ffb347;
+    border: none;
+    padding: 8px 16px;
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    font-weight: bold;
+    border-radius: 35px;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 8px;
+    color: #cbd5e1;
+    font-size: clamp(0.55rem, 2vw, 0.75rem);
+    flex-shrink: 0;
 }
 
 /* модальное окно вопроса */
@@ -265,21 +329,21 @@ body {
 
 .modal-content {
     background: #fef9e8;
-    max-width: 800px;
+    max-width: 650px;
     width: 90%;
-    border-radius: 60px;
-    padding: 30px;
+    border-radius: 48px;
+    padding: 20px;
     text-align: center;
     color: #1e293b;
     box-shadow: 0 25px 40px black;
 }
 
 .results-modal {
-    max-width: 500px;
+    max-width: 420px;
 }
 
 .results-list {
-    margin: 30px 0;
+    margin: 20px 0;
     text-align: left;
 }
 
@@ -287,18 +351,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 20px;
-    margin: 10px 0;
+    padding: 10px 15px;
+    margin: 8px 0;
     background: #f0f0f0;
-    border-radius: 40px;
-    font-size: 1.3rem;
+    border-radius: 35px;
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
     font-weight: bold;
 }
 
 .result-item.place-1 {
     background: linear-gradient(135deg, #ffd700, #ffb347);
     color: #1e293b;
-    transform: scale(1.02);
+    transform: scale(1.01);
 }
 
 .result-item.place-2 {
@@ -312,8 +376,8 @@ body {
 }
 
 .place-icon {
-    font-size: 2rem;
-    margin-right: 15px;
+    font-size: 1.4rem;
+    margin-right: 12px;
 }
 
 .result-name {
@@ -323,37 +387,37 @@ body {
 .result-score {
     font-weight: 800;
     background: #00000033;
-    padding: 5px 15px;
-    border-radius: 30px;
+    padding: 3px 12px;
+    border-radius: 25px;
 }
 
 .question-text {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    margin-bottom: 20px;
     font-weight: 600;
 }
 
 .question-value {
-    font-size: 1.4rem;
+    font-size: 1rem;
     background: goldenrod;
     display: inline-block;
-    padding: 5px 20px;
-    border-radius: 40px;
+    padding: 4px 18px;
+    border-radius: 35px;
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .modal-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 12px;
     margin-top: 20px;
 }
 
 .modal-buttons button {
-    padding: 12px 28px;
-    font-size: 1.2rem;
-    border-radius: 40px;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    border-radius: 35px;
     border: none;
     font-weight: bold;
     cursor: pointer;
@@ -372,77 +436,27 @@ body {
     color: white;
 }
 
-.game-controls {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 15px;
-}
-
-.ctrl-btn {
-    background: #ffb347;
-    border: none;
-    padding: 12px 24px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 40px;
-    cursor: pointer;
-}
-
-.footer {
-    text-align: center;
-    margin-top: 20px;
-    color: #cbd5e1;
-}
-
-@media (max-width: 800px) {
-    .category { font-size: 0.8rem; }
-    .question-cell { font-size: 1.3rem; padding: 15px 5px; }
-    .team-name { font-size: 1rem; }
-    .result-item { font-size: 1rem; padding: 10px 15px; }
-    .place-icon { font-size: 1.5rem; }
-    .team-setup-card { min-width: 200px; }
-    .emoji-option { font-size: 1.4rem; width: 45px; }
-}
-
-/* ========== КНОПКИ НА ЭКРАНЕ НАСТРОЙКИ ========== */
-.setup-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.rules-btn {
-    background: #475569;
-}
-
-.rules-btn:hover {
-    background: #5b6b82;
-}
-
 /* ========== МОДАЛЬНОЕ ОКНО ПРАВИЛ ========== */
 .rules-modal {
-    max-width: 700px;
+    max-width: 550px;
     max-height: 80vh;
     overflow-y: auto;
 }
 
 .rules-modal h2 {
     color: #1e293b;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
 }
 
 .rules-content {
     text-align: left;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .rules-section {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #e2e8f0;
 }
 
@@ -452,49 +466,31 @@ body {
 
 .rules-section h3 {
     color: #2b7e3a;
-    margin-bottom: 10px;
-    font-size: 1.3rem;
+    margin-bottom: 8px;
+    font-size: 1rem;
 }
 
 .rules-section p {
     color: #334155;
-    line-height: 1.5;
-    font-size: 1rem;
+    line-height: 1.4;
+    font-size: 0.85rem;
 }
 
 .rules-section ul {
-    margin: 10px 0 0 20px;
+    margin: 8px 0 0 18px;
     color: #334155;
-    line-height: 1.5;
+    line-height: 1.4;
+    font-size: 0.85rem;
 }
 
 .rules-section li {
-    margin: 8px 0;
+    margin: 4px 0;
 }
 
 #closeRulesBtn {
     background: #2b7e3a;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-}
-
-#closeRulesBtn:hover {
-    background: #1f5a2c;
-}
-
-/* Стили для скролла в модальном окне */
-.rules-modal::-webkit-scrollbar {
-    width: 8px;
-}
-
-.rules-modal::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.rules-modal::-webkit-scrollbar-thumb {
-    background: #ffb347;
-    border-radius: 10px;
+    padding: 10px 25px;
+    font-size: 0.95rem;
 }
 
 /* ========== ЛЕТАЮЩИЕ ФИГУРЫ НА ФОНЕ ========== */
@@ -515,17 +511,14 @@ body {
     animation: float 15s infinite ease-in-out;
 }
 
-/* Звёздочки */
 .shape.star {
     font-family: monospace;
 }
 
-/* Круги */
 .shape.circle {
     border-radius: 50%;
 }
 
-/* Треугольники */
 .shape.triangle {
     width: 0;
     height: 0;
@@ -550,7 +543,6 @@ body {
     }
 }
 
-/* Разные скорости */
 .shape:nth-child(odd) {
     animation-duration: 18s;
 }
@@ -562,4 +554,162 @@ body {
 }
 .shape:nth-child(5n) {
     animation-duration: 14s;
+}
+
+/* ========== АДАПТАЦИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (до 900px) ========== */
+@media (max-width: 900px) {
+    body {
+        padding: 8px;
+    }
+    
+    .game-container {
+        padding: 10px;
+        border-radius: 28px;
+    }
+    
+    .team-card {
+        padding: 6px 12px;
+        min-width: 110px;
+    }
+    
+    .team-name {
+        font-size: 0.75rem;
+    }
+    
+    .team-score {
+        font-size: 1rem;
+    }
+    
+    .score-controls button {
+        width: 26px;
+        font-size: 0.7rem;
+    }
+    
+    .category {
+        padding: 6px 2px;
+        font-size: 0.55rem;
+        border-radius: 16px;
+    }
+    
+    .question-cell {
+        padding: 8px 2px;
+        font-size: 0.9rem;
+        border-radius: 16px;
+    }
+    
+    .game-board {
+        padding: 8px;
+        border-radius: 20px;
+    }
+    
+    .ctrl-btn {
+        padding: 5px 12px;
+        font-size: 0.65rem;
+    }
+    
+    .footer {
+        font-size: 0.5rem;
+    }
+    
+    .team-setup-card {
+        min-width: 160px;
+        padding: 10px;
+    }
+    
+    .emoji-option {
+        font-size: 1.1rem;
+        width: 35px;
+    }
+    
+    .setup-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .start-game-btn {
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+}
+
+/* ========== ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ (до 600px) ========== */
+@media (max-width: 600px) {
+    body {
+        padding: 4px;
+    }
+    
+    .game-container {
+        padding: 6px;
+        border-radius: 20px;
+    }
+    
+    .team-card {
+        padding: 4px 8px;
+        min-width: 90px;
+    }
+    
+    .team-name {
+        font-size: 0.6rem;
+    }
+    
+    .team-score {
+        font-size: 0.85rem;
+    }
+    
+    .score-controls button {
+        width: 22px;
+        font-size: 0.6rem;
+    }
+    
+    .categories {
+        gap: 4px;
+    }
+    
+    .category {
+        padding: 4px 2px;
+        font-size: 0.45rem;
+        border-radius: 12px;
+    }
+    
+    .questions-grid {
+        gap: 4px;
+    }
+    
+    .question-cell {
+        padding: 6px 2px;
+        font-size: 0.7rem;
+        border-radius: 12px;
+    }
+    
+    .ctrl-btn {
+        padding: 4px 8px;
+        font-size: 0.55rem;
+    }
+    
+    .game-board {
+        padding: 6px;
+    }
+    
+    .team-setup-card {
+        min-width: 140px;
+        padding: 8px;
+    }
+    
+    .emoji-option {
+        font-size: 0.9rem;
+        width: 28px;
+        padding: 3px;
+    }
+    
+    .setup-header h1 {
+        font-size: 1.1rem;
+    }
+    
+    .setup-header p {
+        font-size: 0.65rem;
+    }
+    
+    .start-game-btn {
+        padding: 6px 15px;
+        font-size: 0.85rem;
+    }
 }
